@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "npm run build && wrangler pages dev ./dist",
+    "dev with functions": "npm run build && wrangler pages dev --local -- vite",
     "test:unit": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
