@@ -9,6 +9,6 @@ import { Button } from '@/components/ui/button'
 <template>
   <main>
     
-    <Button>HomeView</Button>
+    <Button>ToolsView</Button>
   </main>
 </template>
