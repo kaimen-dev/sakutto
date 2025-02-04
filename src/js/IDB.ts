@@ -31,6 +31,10 @@ interface temporarySave {
   created_at: number;
 }
 
+interface DBUsageStatus extends StorageEstimate {
+  count: number;
+}
+
 const db = new Dexie("ichikawa_completion_report") as Dexie & {
   images: EntityTable<Image, "key">;
   temporarySave: EntityTable<temporarySave, "created_at">;
@@ -39,6 +43,25 @@ db.version(1).stores({
   images: "key,fileName, created_at",
   temporarySave: "created_at",
 });
+
+/**
+ * IndexedDBの使用状況を取得するawait navigator.storage.estimate()
+ */
+const getEstimate = (): Promise<StorageEstimate> => {
+  return navigator.storage.estimate();
+};
+/**
+ * imagesテーブルのレコード数を取得する
+ */
+const getImageCount = (): Promise<number> => {
+  return db.images.count();
+};
+
+const getDBUsage = async (): Promise<DBUsageStatus> => {
+  const count = await getImageCount();
+  const estimate = await getEstimate();
+  return { ...estimate, count };
+};
 
 /**
  * 画像のbase64文字列をDBに保存する。keyが同じ場合は上書きする。
@@ -176,6 +199,39 @@ const deleteDBImage = async (key: string) => {
 };
 
 /**
+ * DBから指定の日付までの画像の数を取得する。
+ */
+const countDBImageByDate = async (dateStr: string): Promise<number> => {
+  return new Promise((resolve) => {
+    const timeStamp = new Date(dateStr).getTime();
+    // console.log(timeStamp);
+    db.images
+      .where("created_at")
+      .below(timeStamp)
+      .count()
+      .then(function (count: number) {
+        resolve(count);
+      });
+  });
+};
+
+/**
+ * DBから指定の日付までの画像を削除する。
+ */
+const deleteDBImageByDate = async (dateStr: string): Promise<number> => {
+  return new Promise((resolve) => {
+    const timeStamp = new Date(dateStr).getTime();
+    db.images
+      .where("created_at")
+      .below(timeStamp)
+      .delete()
+      .then(function (deleteCount) {
+        resolve(deleteCount);
+      });
+  });
+};
+
+/**
  * 保存されている画像のtransform値を更新する。
  * @param key
  * @param transform
@@ -240,11 +296,15 @@ const getTemporarySaveList = async (): Promise<IndexableTypeArray> => {
 
 export {
   db,
+  type DBUsageStatus,
+  getDBUsage,
   putDBImage,
   getDBImage,
   getDBImageFileNames,
   getDBImageByFileName,
   deleteDBImage,
+  countDBImageByDate,
+  deleteDBImageByDate,
   setDBImageTransform,
   setTemporarySave,
   getTemporarySave,

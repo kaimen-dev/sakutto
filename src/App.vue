@@ -5,7 +5,7 @@ import { useSettingsStore, storeToRefs } from "@/stores/settings";
 import { RouterLink, RouterView } from "vue-router";
 import router from "./router";
 import { Toaster } from "@/components/ui/sonner";
-import SettingsView from "./components/SettingsView.vue";
+import SettingsView from "./components/settings/SettingsView.vue";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -124,7 +124,9 @@ function toTop() {
 
     <div class="flex items-center flex-col">
       <small>sakutto.app ©Hiroaki Sato 2025</small>
-      <div v-if="BreadcrumbItems.length === 0" class="flex items-center flex-col">
+      <div
+        v-if="BreadcrumbItems.length === 0"
+        class="flex items-center flex-col">
         <img
           src="/link_qrcode.png"
           alt="サイトリンクQRコード"

@@ -32,7 +32,6 @@ import PageView from "@/components/report/PageView.vue";
 import ListView from "@/components/report/ListView.vue";
 import CreateCover from "@/components/report/CreateCover.vue";
 import TemporarysaveView from "@/components/report/TemporarysaveView.vue";
-import SavedImagesView from "@/components/report/SavedImagesView.vue";
 import {
   Menubar,
   MenubarContent,
@@ -953,21 +952,10 @@ init();
                   ブラウザに自動保存された履歴からデータを復元します。<br />誤ってデータを消去したり、ブラウザを閉じてしまった場合にご利用ください。
                 </DialogDescription></DialogHeader
               >
-              <Tabs default-value="data" class="flex flex-wrap justify-center">
-                <TabsList
-                  class="grid max-w-96 grid-cols-2 sticky top-2 z-10 shadow-md">
-                  <TabsTrigger value="data">データ</TabsTrigger>
-                  <TabsTrigger value="image">画像</TabsTrigger>
-                </TabsList>
-                <TabsContent value="data" class="w-full"
-                  ><TemporarysaveView @putRestoreValue="restore"
-                /></TabsContent>
-                <TabsContent value="image" class="w-full"
-                  ><SavedImagesView
-                /></TabsContent>
-              </Tabs>
-            </DialogContent> </Menubar
-        ></Dialog>
+              <TemporarysaveView @putRestoreValue="restore" />
+            </DialogContent>
+          </Menubar></Dialog
+        >
       </div>
     </div>
     <div

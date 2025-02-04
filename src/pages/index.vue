@@ -4,11 +4,12 @@ import router from "../router";
 
 import type { RouteRecordRaw } from "vue-router";
 import Button from "@/components/ui/button/Button.vue";
-
 const routes = router.getRoutes();
 const appLinks = routes
   .filter((route: RouteRecordRaw) => route.meta?.appLink)
   .sort((a, b) => (a.meta.appLink as number) - (b.meta.appLink as number));
+console.log("home");
+
 </script>
 
 <template>
@@ -39,9 +40,6 @@ const appLinks = routes
       </div>
     </div>
   </main>
-  
-
-  
 </template>
 
 <style scoped></style>

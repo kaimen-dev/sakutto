@@ -411,7 +411,7 @@ function copyMedia(
         image.range.br.nativeRow =
           image.range.br.nativeRow - image.range.tl.nativeRow + startRow;
         image.range.tl.nativeRow = startRow;
-        console.log("image add sheet");
+        // console.log("image add sheet");
         sheetTo.addImage(newImageID, image.range);
       }
     } else {
